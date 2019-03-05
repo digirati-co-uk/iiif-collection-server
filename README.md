@@ -1,5 +1,8 @@
 # IIIF Collection Server
 
+[![Build Status](https://travis-ci.com/digirati-co-uk/iiif-collection-server.svg?token=Jte42dszspRtC2NURDp5&branch=master)](https://travis-ci.com/digirati-co-uk/iiif-collection-server)
+
+
 This is a reference implementation for a IIIF Collection server outputting IIIF Presentation v3 collections.
 
 **Demo:**
