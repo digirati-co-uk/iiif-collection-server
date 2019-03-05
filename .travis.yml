@@ -1,0 +1,11 @@
+language: bash
+services: docker
+
+before_script:
+  - chmod +x ./makeDockerImage.sh
+
+script:
+  - ./makeDockerImage.sh
+
+after_script:
+  - docker images

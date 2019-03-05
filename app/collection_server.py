@@ -42,7 +42,6 @@ def display_root_collection():
 def display_collection(path):
   if request.method in ['POST', 'PUT']:
     data = request.get_data()
-    print(data)
     manifest = preprocess_manifest(path, data)
     write_file(path, manifest)
   return jsonify(get_path(path))
@@ -57,7 +56,6 @@ def display_collection(path):
 # @app.route('/p2/<path:path>', methods=['GET', 'POST'])
 # def display_collection_p2(path):
 #   return jsonify(get_path(path))
-
 
 
 # NOTE: This is only for local development
