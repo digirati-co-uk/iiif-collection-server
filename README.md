@@ -2,7 +2,7 @@
 
 This is a reference implementation for a IIIF Collection server outputting IIIF Presentation v3 collections.
 
-## Installing for local development
+## Installing for local development
 
 **Pre-requirements:** 
 
@@ -60,7 +60,7 @@ The app will run at:
 [http://127.0.0.1:8181/p3/](http://127.0.0.1:8181/p3/)
 
 
-## Configuration
+## Configuration
 
 | Environment Variable | Description |
 |-----|----|
