@@ -86,3 +86,76 @@ On windows based systems:
 set COLLECTION_SERVER_S3_BUCKET=dlcs-dlcservices-test-ingest
 ```
 
+## API
+
+**Get collection or manifest**:
+
+GET **/p3/\<path>**
+
+Example response for a collection:
+
+```json
+{
+  "@context": [
+    "http://iiif.io/api/presentation/3/context.json"
+  ],
+  "id": "http://iiif-collection.ch.digtest.co.uk/p3/",
+  "items": [
+    {
+      "id": "http://iiif-collection.ch.digtest.co.uk/p3/live/",
+      "label": {
+        "en": [
+          "live"
+        ]
+      },
+      "type": "Collection"
+    },
+    {
+      "id": "http://iiif-collection.ch.digtest.co.uk/p3/manifest.json",
+      "label": {
+        "en": [
+          "manifest.json"
+        ]
+      },
+      "type": "Manifest"
+    },
+    {
+      "id": "http://iiif-collection.ch.digtest.co.uk/p3/qa/",
+      "label": {
+        "en": [
+          "qa"
+        ]
+      },
+      "type": "Collection"
+    },
+    {
+      "id": "http://iiif-collection.ch.digtest.co.uk/p3/staging/",
+      "label": {
+        "en": [
+          "staging"
+        ]
+      },
+      "type": "Collection"
+    }
+  ],
+  "label": {
+    "en": [
+      "p3"
+    ]
+  },
+  "type": "Collection"
+}
+```
+
+
+**Add or update a manifest**:
+
+POST **/p3/\<path>/\<manifest>.{json|json-ld|jsonld}**
+
+request body is the manifest jsonld
+Content-Type: application/json
+
+
+# References
+
+[IIIF Presentation v3](https://iiif.io/api/presentation/3.0/)
