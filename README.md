@@ -2,6 +2,11 @@
 
 This is a reference implementation for a IIIF Collection server outputting IIIF Presentation v3 collections.
 
+**Demo:**
+
+[https://iiif-collection.ch.digtest.co.uk/](https://iiif-collection.ch.digtest.co.uk/)
+
+
 ## Installing for local development
 
 **Pre-requirements:** 
