@@ -45,16 +45,16 @@ Activate the virtual environment:
 $ source venv/bin/activate
 ```
 
-Install the the python packages required for the porject.
+Install the the python packages required for the project.
 
 ```
 (venv)$ cd app
 (venv)$ pip install -r requirements.txt
 ```
 
-See the configuration section for detailed configuration.
+See the configuration section for environment variable requirements.
 
-Run the app locally:
+To run the app locally:
 
 ```
 (venv)$ python collection_server.py
