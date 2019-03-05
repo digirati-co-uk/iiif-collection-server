@@ -1,4 +1,3 @@
-
 JSON_FILE = ('.json', '.jsonld', '.json-ld')
 DEFAULT_PROPS = {
     "p2": {
@@ -9,7 +8,7 @@ DEFAULT_PROPS = {
         "collection": "sc:Collection",
         "collections": "collections",
         "manifests": "manifests",
-        "labelFn": lambda label : label,
+        "labelFn": lambda label: label,
     },
     "p3": {
         "@context": [
@@ -21,6 +20,6 @@ DEFAULT_PROPS = {
         "collection": "Collection",
         "collections": "items",
         "manifests": "items",
-        "labelFn": lambda label : { "en": [label]},
+        "labelFn": lambda label: {"en": [label]},
     }
 }
