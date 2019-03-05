@@ -21,17 +21,17 @@ client = session.client('s3')
 
 S3Obj = namedtuple('S3Obj', ['key', 'mtime', 'size', 'ETag'])
 
-def s3list(path, start=None, end=None, recursive=False, list_dirs=True,
-           list_objs=True, limit=None):
-  """
-  Iterator that lists a bucket's objects under path, (optionally) starting with
-  start and ending before end.
 
-  If recursive is False, then list only the "depth=0" items (dirs and objects).
+def s3list(path, start=None, end=None, recursive=False, list_dirs=True, list_objs=True, limit=None):
+    """
+    Iterator that lists a bucket's objects under path, (optionally) starting with
+    start and ending before end.
 
-  If recursive is True, then list recursively all objects (no dirs).
+    If recursive is False, then list only the "depth=0" items (dirs and objects).
 
-  Args:
+    If recursive is True, then list recursively all objects (no dirs).
+
+    Args:
     bucket:
       a boto3.resource('s3').Bucket().
     path:
@@ -53,10 +53,10 @@ def s3list(path, start=None, end=None, recursive=False, list_dirs=True,
     limit:
       optional. If specified, then lists at most this many items.
 
-  Returns:
+    Returns:
     an iterator of S3Obj.
 
-  Examples:
+    Examples:
     # set up
     >>> s3 = boto3.resource('s3')
     ... bucket = s3.Bucket(name)
@@ -76,66 +76,70 @@ def s3list(path, start=None, end=None, recursive=False, list_dirs=True,
     # non-recursive listing under some dir, listing only dirs:
     >>> for p in s3ls(bucket, 'some/dir', recursive=False, list_objs=False):
     ...     print(p)
-"""
-    
-  kwargs = dict()
-  if start is not None:
-    if not start.startswith(path):
-      start = os.path.join(path, start)
-    # note: need to use a string just smaller than start, because
-    # the list_object API specifies that start is excluded (the first
-    # result is *after* start).
-    kwargs.update(Marker=__prev_str(start))
-  if end is not None:
-    if not end.startswith(path):
-      end = os.path.join(path, end)
-  if not recursive:
-    kwargs.update(Delimiter='/')
-    if not path.endswith('/'):
-      path += '/'
-  kwargs.update(Prefix=path)
-  if limit is not None:
-    kwargs.update(PaginationConfig={'MaxItems': limit})
+    """
 
-  paginator = client.get_paginator('list_objects')
-  for resp in paginator.paginate(Bucket=BUCKET_NAME, **kwargs):
-    q = []
-    if 'CommonPrefixes' in resp and list_dirs:
-      q = [S3Obj(f['Prefix'], None, None, None) for f in resp['CommonPrefixes']]
-    if 'Contents' in resp and list_objs:
-      q += [S3Obj(f['Key'], f['LastModified'], f['Size'], f['ETag']) for f in resp['Contents']]
-    # note: even with sorted lists, it is faster to sort(a+b)
-    # than heapq.merge(a, b) at least up to 10K elements in each list
-    q = sorted(q, key=attrgetter('key'))
+    kwargs = dict()
+    if start is not None:
+        if not start.startswith(path):
+            start = os.path.join(path, start)
+        # note: need to use a string just smaller than start, because
+        # the list_object API specifies that start is excluded (the first
+        # result is *after* start).
+        kwargs.update(Marker=__prev_str(start))
+    if end is not None:
+        if not end.startswith(path):
+            end = os.path.join(path, end)
+    if not recursive:
+        kwargs.update(Delimiter='/')
+        if not path.endswith('/'):
+            path += '/'
+    kwargs.update(Prefix=path)
     if limit is not None:
-      q = q[:limit]
-      limit -= len(q)
-    for p in q:
-      if end is not None and p.key >= end:
-        return
-      yield p
+        kwargs.update(PaginationConfig={'MaxItems': limit})
+
+    paginator = client.get_paginator('list_objects')
+    for resp in paginator.paginate(Bucket=BUCKET_NAME, **kwargs):
+        q = []
+        if 'CommonPrefixes' in resp and list_dirs:
+            q = [S3Obj(f['Prefix'], None, None, None) for f in resp['CommonPrefixes']]
+        if 'Contents' in resp and list_objs:
+            q += [S3Obj(f['Key'], f['LastModified'], f['Size'], f['ETag']) for f in resp['Contents']]
+        # note: even with sorted lists, it is faster to sort(a+b)
+        # than heapq.merge(a, b) at least up to 10K elements in each list
+        q = sorted(q, key=attrgetter('key'))
+        if limit is not None:
+            q = q[:limit]
+            limit -= len(q)
+        for p in q:
+            if end is not None and p.key >= end:
+                return
+            yield p
+
 
 def __prev_str(s):
-  if len(s) == 0:
+    if len(s) == 0:
+        return s
+    s, c = s[:-1], ord(s[-1])
+    if c > 0:
+        s += chr(c - 1)
+    s += ''.join(['\u7FFF' for _ in range(10)])
     return s
-  s, c = s[:-1], ord(s[-1])
-  if c > 0:
-    s += chr(c - 1)
-  s += ''.join(['\u7FFF' for _ in range(10)])
-  return s
+
 
 # end of nicked code
 
 def get_list_of_files(folder):
-  prefix = '/'.join([BASE_FOLDER, folder])
-  return [o.key for o in s3list(prefix)]
+    prefix = '/'.join([BASE_FOLDER, folder])
+    return [o.key for o in s3list(prefix)]
+
 
 def get_file(path):
-  key = '/'.join([BASE_FOLDER, path])
-  obj = client.get_object(Bucket=BUCKET_NAME, Key=key)
-  return json.loads(obj['Body'].read().decode('utf-8'))
+    key = '/'.join([BASE_FOLDER, path])
+    obj = client.get_object(Bucket=BUCKET_NAME, Key=key)
+    return json.loads(obj['Body'].read().decode('utf-8'))
+
 
 def write_file(path, body):
-  key = '/'.join([BASE_FOLDER, path])
-  body = body if type(body) == str else json.dumps(body)
-  session.resource('s3').Object(BUCKET_NAME, key).put(Body=body)
+    key = '/'.join([BASE_FOLDER, path])
+    body = body if type(body) == str else json.dumps(body)
+    session.resource('s3').Object(BUCKET_NAME, key).put(Body=body)
