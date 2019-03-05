@@ -10,8 +10,10 @@ from flask_cors import CORS
 from path_resolver import get_path
 from manifest_processor import preprocess_manifest
 from s3 import write_file
+from werkzeug.contrib.fixers import ProxyFix
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, num_proxies=1)
 CORS(app)
 
 print('flask.__version__', flask.__version__)
