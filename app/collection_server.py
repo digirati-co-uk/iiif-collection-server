@@ -10,6 +10,8 @@ from manifest_processor import preprocess_manifest
 from s3 import write_file
 from werkzeug.contrib.fixers import ProxyFix
 
+__version__ = "0.0.1"
+
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, num_proxies=1)
 CORS(app)
