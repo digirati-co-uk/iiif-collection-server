@@ -10,8 +10,9 @@ EXPOSE 5000
 
 WORKDIR /opt/iiif-collection-server
 
-COPY ./app/requirements.txt /opt/iiif-collection-server/
-COPY ./app/*.py /opt/iiif-collection-server/
+COPY ./requirements.txt /opt/iiif-collection-server/
+COPY ./iiif_collection_server/*.py /opt/iiif-collection-server/iiif_collection_server/
+COPY ./collection_server.py  /opt/iiif-collection-server/
 
 ENV FLASK_APP collection_server.py
 

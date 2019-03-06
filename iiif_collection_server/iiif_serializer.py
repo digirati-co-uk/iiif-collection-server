@@ -1,11 +1,12 @@
-from settings import BASE_FOLDER
-from constants import DEFAULT_PROPS, JSON_FILE
+from iiif_collection_server.settings import BASE_FOLDER
+from iiif_collection_server.constants import DEFAULT_PROPS, JSON_FILE
 
 
 def collection_serializer(base_path, path,  items, version='p3'):
     """
     Serialises the contents of a folder
     """
+    print(base_path, path)
     path_parts = path.split('/')
     props = DEFAULT_PROPS[version]
     id_property = props['id']
@@ -28,7 +29,7 @@ def collection_serializer(base_path, path,  items, version='p3'):
         })
 
     for item in items:
-        child_id = base_path + item.replace(BASE_FOLDER, '')
+        child_id = base_path + item.replace(BASE_FOLDER + '/', '')
         if child_id == path:
             continue
         child_label = item.rstrip('/').split('/')[-1]
@@ -36,7 +37,7 @@ def collection_serializer(base_path, path,  items, version='p3'):
             manifest = dict()
             manifest["label"] = props['labelFn'](child_label)
             manifest[id_property] = child_id
-            manifest[type_property] =  props['manifest']
+            manifest[type_property] = props['manifest']
             result[props['manifests']].append(manifest)
         else:
             sub_collection = dict()

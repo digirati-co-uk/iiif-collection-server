@@ -1,0 +1,30 @@
+{
+    "@context": "http://iiif.io/api/presentation/2/context.json",
+    "@id": "http://0.0.0.0:8181/p2/",
+    "@type": "sc:Collection",
+    "collections": [
+      {
+        "@id": "http://0.0.0.0:8181/p2/live/",
+        "@type": "sc:Collection",
+        "label": "live"
+      },
+      {
+        "@id": "http://0.0.0.0:8181/p2/qa/",
+        "@type": "sc:Collection",
+        "label": "qa"
+      },
+      {
+        "@id": "http://0.0.0.0:8181/p2/staging/",
+        "@type": "sc:Collection",
+        "label": "staging"
+      }
+    ],
+    "label": "p2",
+    "manifests": [
+      {
+        "@id": "http://0.0.0.0:8181/p2/manifest.json",
+        "@type": "sc:Manifest",
+        "label": "manifest.json"
+      }
+    ]
+  }

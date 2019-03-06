@@ -1,6 +1,5 @@
 import json
-from flask import request
-from constants import JSON_FILE
+from iiif_collection_server.constants import JSON_FILE
 
 
 def check_extension_is_valid(path):
@@ -41,17 +40,20 @@ def get_presentation_version(jsonld_context):
     :return: the presentation api version
     :raise: TypeError if the context type is not vaild.
     """
-    if "http://iiif.io/api/presentation/2/context.json" in jsonld_context or "https://iiif.io/api/presentation/2/context.json" in jsonld_context:
+    if "http://iiif.io/api/presentation/2/context.json" in jsonld_context or \
+            "https://iiif.io/api/presentation/2/context.json" in jsonld_context:
         return 2
-    elif "http://iiif.io/api/presentation/3/context.json" in jsonld_context or "https://iiif.io/api/presentation/3/context.json" in jsonld_context:
+    elif "http://iiif.io/api/presentation/3/context.json" in jsonld_context or \
+            "https://iiif.io/api/presentation/3/context.json" in jsonld_context:
         return 3
-    elif "http://www.shared-canvas.org/ns/context.json" in jsonld_context or "https://www.shared-canvas.org/ns/context.json" in jsonld_context:
+    elif "http://www.shared-canvas.org/ns/context.json" in jsonld_context or \
+            "https://www.shared-canvas.org/ns/context.json" in jsonld_context:
         return 1
     else:
         raise TypeError('JSON-LD @context desn\'t match any known IIIF presentation type')
    
     
-def preprocess_manifest(path, raw_json_str):
+def preprocess_manifest(url, path, raw_json_str):
     """
     Basic jsonld validity check and top level id updating at the moment.
     :params: path - the path without the
@@ -70,5 +72,5 @@ def preprocess_manifest(path, raw_json_str):
         pass
 
     id_property = '@id' if presentation_version < 3 else 'id'
-    manifest[id_property] = request.url
+    manifest[id_property] = url
     return manifest

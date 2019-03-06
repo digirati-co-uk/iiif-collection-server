@@ -2,11 +2,13 @@ language: python
 services: docker
 
 before_script:
+  - chmod +x ./test.sh
   - chmod +x ./makeDockerImage.sh
   - chmod +x ./bounceService.sh
   - pip install awscli
 
 script:
+  - ./test.sh
   - ./makeDockerImage.sh
   - ./bounceService.sh
 
