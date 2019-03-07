@@ -169,6 +169,7 @@ DELETE **/p3/\<path>/\<manifest>.{json|json-ld|jsonld}**
    - Blocker: IIIF prezi upgrader project is not under pip at the moment.
 - add cacheing and cache busting example...
    - Pick one of the following: varnish (this is my vote), flask-cache, etc.
+- iiif auth support for write operations...
 
 # References
 
