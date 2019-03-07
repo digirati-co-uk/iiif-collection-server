@@ -51,7 +51,7 @@ $ source venv/bin/activate
 Install the the python packages required for the project.
 
 ```
-(venv)$ cd app
+(venv)$ cd iiif-collection-server
 (venv)$ pip install -r requirements.txt
 ```
 
@@ -157,6 +157,11 @@ POST **/p3/\<path>/\<manifest>.{json|json-ld|jsonld}**
 
 request body is the manifest jsonld
 Content-Type: application/json
+
+**Delete a manifest**:
+
+DELETE **/p3/\<path>/\<manifest>.{json|json-ld|jsonld}**
+
 
 
 # References
