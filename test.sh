@@ -12,7 +12,14 @@ export COLLECTION_SERVER_S3_BASE_PREFIX=test-collection
 export COLLECTION_SERVER_S3_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxx
 export COLLECTION_SERVER_S3_SECRET_KEY=yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 
+/bin/cat > .coveralls.yml <<EOF
+service_name: travis-pro
+repo_token: $COLLECTION_SERVER_COVERALLS_TOKEN
+EOF
+
+
 pytest --capture=sys -vv --cov=iiif_collection_server tests/
+coveralls
 
 deactivate
 
