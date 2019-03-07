@@ -51,7 +51,7 @@ $ source venv/bin/activate
 Install the the python packages required for the project.
 
 ```
-(venv)$ cd app
+(venv)$ cd iiif-collection-server
 (venv)$ pip install -r requirements.txt
 ```
 
@@ -156,8 +156,20 @@ Example response for a collection:
 POST **/p3/\<path>/\<manifest>.{json|json-ld|jsonld}**
 
 request body is the manifest jsonld
+
 Content-Type: application/json
 
+**Delete a manifest**:
+
+DELETE **/p3/\<path>/\<manifest>.{json|json-ld|jsonld}**
+
+# Possible enhancements
+
+- add IIIF prezi upgrader to the manifest input in case it is not p3, https://github.com/IIIF/prezi-2-to-3/tree/master/iiif_prezi_upgrader 
+   - Blocker: IIIF prezi upgrader project is not under pip at the moment.
+- add cacheing and cache busting example...
+   - Pick one of the following: varnish (this is my vote), flask-cache, etc.
+- iiif auth support for write operations...
 
 # References
 
