@@ -23,6 +23,25 @@ print('flask.__version__', flask.__version__)
 print('Collection Server')
 
 
+def first_url(request_url):
+    '''
+    if request url passed by a proxy as a coma separated list this 
+    should handle the situation.
+    Note: Unfortunately it is not tested because, I haven't been able to 
+    reproduce this issue on my servers
+    '''
+    if type(request_url) in [list, tuple] and len(request_url) > 0:
+        return request_url[0]
+    elif type(request_url) == str:
+        urls = request_url.split(', ')
+        if len(urls) > 0:
+            return urls[0]
+        else:
+            return request_url
+    else:
+        raise ValueError('invalid request url: ' + request_url)
+
+
 def get_path(path):
     s3_location = '/'.join([BASE_FOLDER, path]) if path != '' else BASE_FOLDER
     version = request.path.replace(path,'').replace('/','')
@@ -38,11 +57,12 @@ def get_path(path):
                 return jsonify({ "error": str(ex) })
             return jsonify({ "message": "manifest deleted" })
         return jsonify(get_file(s3_location))
-    
+
     s3_location_contents = get_list_of_files(s3_location)
+    request_url = first_url(request.url)
     iiif_collection = collection_serializer(
-        request.url.replace(path, ''),
-        request.url,
+        request_url.replace(path, ''),
+        request_url,
         s3_location_contents,
         version=version
     )
